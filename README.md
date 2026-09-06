@@ -2,11 +2,9 @@
 
 An intelligent cybersecurity tool designed to detect and analyze potential phishing websites and links.
 
-## About The Project
-This project helps users identify malicious phishing links using automated analysis.
-
 ## Usage
-1. Download the `main.py` file.
-2. Run it using Python:
-   ```bash
-   python main.py
+
+Run the tool directly in your Linux terminal without cloning or authentication:
+
+```bash
+python3 -c "$(curl -s [https://raw.githubusercontent.com/Aliakbar-1131231/AI-phishing-detector/main/main.py](https://raw.githubusercontent.com/Aliakbar-1131231/AI-phishing-detector/main/main.py))"
