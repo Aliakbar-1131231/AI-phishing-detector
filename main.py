@@ -1,41 +1,39 @@
-# AI Phishing Detector - Basic URL Checker
-# This script performs a simple keyword check on a provided URL to identify potentially suspicious patterns.
+import sys
+
+suspicious_keywords = [
+    "login", "verify", "update", "banking", "secure", 
+    "account", "confirm", "signin", "support", "ebayisapi"
+]
 
 def check_phishing(url):
-    # Define a list of keywords commonly found in phishing URLs.
-    suspicious_keywords = [
-        "login", "verify", "update", "free", "account", "security",
-        "signin", "password", "confirm", "reward", "banking"
-    ]
-    
-    # Initialize a threat score.
+    url_lower = url.lower()
     threat_score = 0
     
-    # Convert the URL to lowercase for case-insensitive comparison.
-    url_lower = url.lower()
-    
-    # Iterate through the keyword list and count matches in the URL.
     for word in suspicious_keywords:
         if word in url_lower:
             threat_score += 1
             
-    # Output the initial analysis results.
     print(f"\n--- Analysis Results for URL: {url} ---")
     if threat_score > 0:
-       print(f"⚠️ Warning: Found {threat_score} suspicious pattern(s) related to phishing.")
-       print("This URL might be unsafe. Proceed with caution.")
+        print(f"⚠️ Warning: Found {threat_score} suspicious pattern(s) related to phishing.")
+        print("This URL might be unsafe. Proceed with caution.")
     else:
         print("✅ No obvious phishing patterns detected based on basic keywords.")
         print("However, always remain vigilant.")
-    print("-------------------------------------------\n")
+    print("-" * 45 + "\n")
 
-# --- Main execution part ---
 if __name__ == "__main__":
-    try:
-        user_url = input("Enter the URL you want to check: ")
-        if user_url.strip():
-            check_phishing(user_url)
-        else:
-            print("No URL entered. Exiting.")
-    except KeyboardInterrupt:
-        print("\nProgram interrupted by user. Exiting.")
+    if len(sys.argv) > 1:
+        user_url = sys.argv[1]
+    else:
+        try:
+            print("AI Phishing Detector Active")
+            user_url = input("Enter the URL you want to check: ")
+        except (EOFError, KeyboardInterrupt):
+            print("\nExiting.")
+            sys.exit(1)
+            
+    if user_url.strip():
+        check_phishing(user_url.strip())
+    else:
+        print("No URL entered. Exiting.")
