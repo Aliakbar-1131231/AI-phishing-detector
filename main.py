@@ -2,8 +2,29 @@ import sys
 
 suspicious_keywords = [
     "login", "verify", "update", "banking", "secure", 
-    "account", "confirm", "signin", "support", "ebayisapi"
+    "account", "confirm", "signin", "support", "ebayisapi",
+    "free", "bonus", "gift", "auth", "portal"
 ]
+
+def print_warning_banner():
+    print(r"""
+  ██╗    ██╗ █████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ 
+  ██║    ██║██╔══██╗██╔══██╗████╗  ██║██║████╗  ██║██╔════╝ 
+  ██║ █╗ ██║███████║██████╔╝██╔██╗ ██║██║██╔██╗ ██║██║  ███╗
+  ██║███╗██║██╔══██║██╔══██╗██║╚██╗██║██║██║╚██╗██║██║   ██║
+   ╚███╔███╔╝██║  ██║██║  ██║██║ ╚████║██║██║ ╚████║╚██████╔╝
+    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+    """)
+
+def print_safe_banner():
+    print(r"""
+   ███████╗ █████╗ ███████╗███████╗
+   ██╔════╝██╔══██╗██╔════╝██╔════╝
+   ███████╗███████║█████╗  █████╗  
+   ╚════██║██╔══██║██╔══╝  ██╔══╝  
+   ███████║██║  ██║██║     ███████╗
+   ╚══════╝╚═╝  ╚═╝╚═╝     ╚══════╝
+    """)
 
 def check_phishing(url):
     url_lower = url.lower()
@@ -13,22 +34,29 @@ def check_phishing(url):
         if word in url_lower:
             threat_score += 1
             
-    print(f"\n--- Analysis Results for URL: {url} ---")
+    if "@" in url_lower:
+        threat_score += 2  
+        
+    print(f"\n[*] Analyzing URL: {url}")
+    print("-" * 60)
+    
     if threat_score > 0:
-        print(f"⚠️ Warning: Found {threat_score} suspicious pattern(s) related to phishing.")
-        print("This URL might be unsafe. Proceed with caution.")
+        print_warning_banner()
+        print(f"⚠️  WARNING: Detected {threat_score} high-risk indicator(s)!")
+        print("⚠️  Status: This URL is highly suspicious and resembles a phishing attack.")
     else:
-        print("✅ No obvious phishing patterns detected based on basic keywords.")
-        print("However, always remain vigilant.")
-    print("-" * 45 + "\n")
+        print_safe_banner()
+        print("✅ STATUS: SECURE / SAFE")
+        print("No obvious phishing patterns or malicious keywords detected.")
+    print("-" * 60 + "\n")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         user_url = sys.argv[1]
     else:
         try:
-            print("AI Phishing Detector Active")
-            user_url = input("Enter the URL you want to check: ")
+            print("=== AI PHISHING DETECTOR v2.1 ===")
+            user_url = input("Enter the URL to scan: ")
         except (EOFError, KeyboardInterrupt):
             print("\nExiting.")
             sys.exit(1)
@@ -36,4 +64,4 @@ if __name__ == "__main__":
     if user_url.strip():
         check_phishing(user_url.strip())
     else:
-        print("No URL entered. Exiting.")
+        print("[-] Error: No URL provided.")
